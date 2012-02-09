@@ -94,6 +94,11 @@ extra:
 
 The precise information available may depend on the permissions which you request.
 
+## Sample app
+
+You can find a sample app that use this GEM here :
+https://github.com/geoffroymontel/omniauth-deezer-test
+
 ## Supported Rubies
 
 Actively tested with the following Ruby versions:
