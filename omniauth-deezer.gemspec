@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
 
   # specify any dependencies here; for example:
   s.add_runtime_dependency 'omniauth', '~> 1.0.0'
+  s.add_runtime_dependency 'faraday'
   
   # s.add_development_dependency "rspec"
   # s.add_runtime_dependency "rest-client"
