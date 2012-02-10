@@ -18,8 +18,8 @@ module OmniAuth
       args [:app_id,:app_secret]
 
       option :client_options, {
-        :authorize_url => 'http://connect.deezer.com/oauth/auth.php',
-        :token_url => 'http://connect.deezer.com/oauth/access_token.php',
+        :authorize_url => 'https://connect.deezer.com/oauth/auth.php',
+        :token_url => 'https://connect.deezer.com/oauth/access_token.php',
         :me_url => 'http://api.deezer.com/2.0/user/me'
       }
 
@@ -40,13 +40,22 @@ module OmniAuth
           end
 
           # get token from Deezer
+          token_url = options.client_options.token_url
           token_url = options.client_options.token_url+'?app_id='+options.app_id+'&secret='+options.app_secret+'&code='+request.params['code']
-          response = Faraday.get token_url
+          connection = nil
+          if options.client_options.ssl.ca_path then 
+            connection = Faraday::Connection.new token_url, :ssl => {:ca_path => options.client_options.ssl.ca_path }
+          else
+            connection = Faraday::Connection.new token_url
+          end
+          response = connection.get token_url
+
           response_hash = CGI::parse(response.body.chomp)
           @access_token = response_hash['access_token'][0]
           @token_expires_at = response_hash['expires'][0].to_i
-          me_path = options.client_options.me_url+'?access_token='+@access_token
+
           # get info from current user
+          me_path = options.client_options.me_url+'?access_token='+@access_token
           response = Faraday.get me_path
           @raw_info = MultiJson.decode(response.body.chomp)
 
