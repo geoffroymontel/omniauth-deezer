@@ -43,7 +43,7 @@ module OmniAuth
           token_url = options.client_options.token_url
           token_url = options.client_options.token_url+'?app_id='+options.app_id+'&secret='+options.app_secret+'&code='+request.params['code']
           connection = nil
-          if options.client_options.ssl.ca_path then 
+          if options.client_options.ssl && options.client_options.ssl.ca_path then 
             connection = Faraday::Connection.new token_url, :ssl => {:ca_path => options.client_options.ssl.ca_path }
           else
             connection = Faraday::Connection.new token_url
