@@ -52,7 +52,8 @@ module OmniAuth
 
           response_hash = CGI::parse(response.body.chomp)
           @access_token = response_hash['access_token'][0]
-          @token_expires_at = response_hash['expires'][0].to_i
+          expires_in = response_hash['expires'][0].to_i
+          @token_expires_at = Time.now + expires_in if expires_in > 0
 
           # get info from current user
           me_path = options.client_options.me_url+'?access_token='+@access_token
@@ -95,7 +96,7 @@ module OmniAuth
       credentials do
         {
           :token => @access_token,
-          :expires => @token_expires_at > 0 ? 'true' : 'false',
+          :expires => @token_expires_at ? 'true' : 'false',
           :expires_at => @token_expires_at
         }
       end
