@@ -113,16 +113,10 @@ The precise information available may depend on the permissions which you reques
 You can find a sample app that use this GEM here :
 https://github.com/geoffroymontel/omniauth-deezer-test
 
-## Supported Rubies
-
-Actively tested with the following Ruby versions:
-
-- MRI 1.9.2
-
 ## Tests
 
 This first version does not have any automated test. I'm really sorry.
-But you're really welcome to help me add some !
+But you're really welcome to help me add any !
 
 ## Contributing
 
@@ -130,7 +124,8 @@ This is my first GEM, so don't hesitate to raise bugs, fork, and submit bug fixe
 
 ## License
 
-Copyright 2012 by Geoffroy Montel
+Copyright 2012 by [Geoffroy Montel](https://github.com/geoffroymontel)
+Contributions from [Jacek Tomaszewski](https://github.com/jtomaszewski) and [Simone Dall'Angelo](https://github.com/simo2409)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
