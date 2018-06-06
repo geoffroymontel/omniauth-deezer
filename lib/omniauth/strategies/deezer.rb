@@ -27,7 +27,10 @@ module OmniAuth
 
       def request_phase
         options.perms ||= DEFAULT_PERMS
-        redirecting_to = options.client_options.authorize_url+'?app_id='+options.app_id+'&redirect_uri='+CGI::escape(callback_url)+'&perms='+options.perms
+
+        new_url_to_go = callback_url.split('?')[0]
+                
+        redirecting_to = options.client_options.authorize_url+'?app_id='+options.app_id+'&redirect_uri='+CGI::escape(new_url_to_go)+'&perms='+options.perms
         redirect redirecting_to
       end
 
