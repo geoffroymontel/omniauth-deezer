@@ -6,7 +6,7 @@ require 'multi_json'
 
 module OmniAuth
   module Strategies
-    class Deezer 
+    class Deezer
       include OmniAuth::Strategy
 
       DEFAULT_PERMS = "basic_access"
@@ -14,7 +14,7 @@ module OmniAuth
       option :name, "deezer"
 
       # request phase
-      
+
       args [:app_id,:app_secret]
 
       option :client_options, {
@@ -27,26 +27,24 @@ module OmniAuth
 
       def request_phase
         options.perms ||= DEFAULT_PERMS
-
         new_url_to_go = callback_url.split('?')[0]
-                
-        redirecting_to = options.client_options.authorize_url+'?app_id='+options.app_id+'&redirect_uri='+CGI::escape(new_url_to_go)+'&perms='+options.perms
-        redirect redirecting_to
+
+        redirect "#{options.client_options.authorize_url}?app_id=#{options.app_id}&redirect_uri=#{CGI.escape(new_url_to_go)}&perms=#{options.perms}"
       end
 
       # callback phase
 
       def callback_phase
         begin
-          if request.params['error_reason'] then 
-            raise CredentialsError, request.params['error_reason'] 
+          if request.params['error_reason'] then
+            raise CredentialsError, request.params['error_reason']
           end
 
           # get token from Deezer
-          token_url = options.client_options.token_url
-          token_url = options.client_options.token_url+'?app_id='+options.app_id+'&secret='+options.app_secret+'&code='+request.params['code']
+          token_url = "#{options.client_options.token_url}?app_id=#{options.app_id}&secret=#{options.app_secret}&code=#{request.params['code']}"
+
           connection = nil
-          if options.client_options.ssl && options.client_options.ssl.ca_path then 
+          if options.client_options.ssl && options.client_options.ssl.ca_path then
             connection = Faraday::Connection.new token_url, :ssl => {:ca_path => options.client_options.ssl.ca_path }
           else
             connection = Faraday::Connection.new token_url
@@ -64,7 +62,6 @@ module OmniAuth
           @raw_info = MultiJson.decode(response.body.chomp)
 
           super
-
         rescue ::MultiJson::DecodeError => e
           fail!(:invalid_response, e)
         rescue ::Timeout::Error, ::Errno::ETIMEDOUT => e
@@ -73,7 +70,7 @@ module OmniAuth
           fail!(:failed_to_connect, e)
         rescue TypeError => e
           fail!(:invalid_response, e)
-        rescue CredentialsError => e                      
+        rescue CredentialsError => e
           fail!(:invalid_credentials, e)
         end
       end
@@ -81,7 +78,7 @@ module OmniAuth
       uid { @raw_info['id'] }
 
       info do
-        h = 
+        h =
         {
           :name => @raw_info['firstname']+' '+@raw_info['lastname'],
           :nickname => @raw_info['name'],
@@ -119,7 +116,6 @@ module OmniAuth
           self.error = error
         end
       end
-
     end
   end
 end
